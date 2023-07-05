@@ -1,0 +1,8 @@
+{
+	"C_Cpp.default.compilerPath": "D:\\Tools\\msys64\\usr\\bin\\g++.exe",
+	"C_Cpp.intelliSenseEngineFallback": "enabled",
+	"files.associations": {
+		"*.JLinkScript": "c",
+		"*.ipp": "cpp"
+	}
+}
