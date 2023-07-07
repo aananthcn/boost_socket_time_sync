@@ -9,11 +9,6 @@ using boost::asio::ip::tcp;
 
 int time_sync(int argc, char *argv[]) {
 	try {
-		if (argc != 2) {
-			std::cerr << "Usage: client <host>" << std::endl;
-			return 1;
-		}
-
 		boost::asio::io_context io_context;
 
 		tcp::resolver resolver(io_context);
@@ -47,6 +42,11 @@ int time_sync(int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
+	if (argc != 2) {
+		std::cerr << "Usage: client <host>" << std::endl;
+		return 1;
+	}
+
 	for (;;) {
 		time_sync(argc, argv);
 		boost::this_thread::sleep(boost::posix_time::seconds(1));
