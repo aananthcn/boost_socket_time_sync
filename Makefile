@@ -9,7 +9,7 @@ ifeq ($(OS),Windows_NT)
 else
 	target_os     := Linux
 	CLIENT_LFLAGS := -l boost_system -l boost_iostreams -l boost_chrono -l boost_thread -l pthread
-	SERVER_LFLAGS := -l boost_system -l boost_iostreams
+	SERVER_LFLAGS := -l boost_system -l boost_iostreams -l pthread
 endif
 
 
