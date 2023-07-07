@@ -3,37 +3,39 @@
 
 
 ifeq ($(OS),Windows_NT)
-	target_os := windows
+	target_os     := Windows
+	CLIENT_LFLAGS := -l boost_system-mt -l boost_iostreams-mt -l ws2_32 -l boost_chrono-mt -l boost_thread-mt
+	SERVER_LFLAGS := -l boost_system-mt -l boost_iostreams-mt -l ws2_32
 else
-	target_os := linux
+	target_os     := Linux
+	CLIENT_LFLAGS := -l boost_system -l boost_iostreams -l boost_chrono -l boost_thread -l pthread
+	SERVER_LFLAGS := -l boost_system -l boost_iostreams
 endif
 
 
+%.o: %.cpp
+	g++ -c -o $@ $^
 
-win_client:
-	g++ time_client.cpp -o time_client.exe -l boost_system-mt -l boost_iostreams-mt -l ws2_32 -l boost_chrono-mt -l boost_thread-mt
+client_objs := \
+		time_client.o
 
-win_server:
-	g++ time_server.cpp -o time_server.exe -l boost_system-mt -l boost_iostreams-mt -l ws2_32
-
-
-
-linux_client:
-	g++ time_client.cpp -o time_client.exe -l boost_system -l boost_iostreams -l boost_chrono -l boost_thread
-
-linux_server:
-	g++ time_server.cpp -o time_server.exe -l boost_system -l boost_iostreams
+server_objs := \
+		time_server.o
 
 
-windows:
-	$(MAKE) win_client
-	$(MAKE) win_server
+time_client.exe: ${client_objs}
+	@echo Building time_client for ${target_os}....
+	g++ ${client_objs} -o $@ ${CLIENT_LFLAGS}
 
-linux:
-	$(MAKE) linux_client
-	$(MAKE) linux_server
+time_server.exe: ${server_objs}
+	@echo Building time_server for ${target_os}....
+	g++ ${server_objs} -o $@ ${SERVER_LFLAGS}
 
 
-all:
-	@echo Building for ${target_os}....
-	$(MAKE) ${target_os}
+targets := time_client.exe time_server.exe
+
+all: ${targets}
+	@echo Build complete!
+
+clean:
+	$(RM) ${targets} ${client_objs} ${server_objs}
